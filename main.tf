@@ -12,6 +12,11 @@ terraform{
 	}
 }
 
+variable "devopsdemoimage" {
+	type = string
+	description = "The name of the devopsdemo image"
+}
+
 variable "imagebuild" {
 	type = string
 	description = "Latest Image Build"
@@ -23,7 +28,7 @@ resource "azurerm_resource_group" "tf_test" {
 }
 
 resource "azurerm_container_group" "trcg_test" {
-	name				= "devopsdemo"
+	name				= "${var.devopsdemoimage}"
 	location			= azurerm_resource_group.tf_test.location
 	resource_group_name = azurerm_resource_group.tf_test.name
 	
@@ -32,8 +37,8 @@ resource "azurerm_container_group" "trcg_test" {
 	os_type = "Linux"
 
 	container {
-		name = "devopsdemo"
-		image = "domas911/devopsdemo:${var.imagebuild}"
+		name = "${var.devopsdemoimage}"
+		image = "domas911/${var.devopsdemoimage}:${var.imagebuild}"
 		cpu = "1"
 		memory = "1"
 		ports {
