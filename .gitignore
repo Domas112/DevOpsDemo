@@ -369,5 +369,3 @@ FodyWeavers.xsd
 # .tfstate files
 *.tfstate
 *.tfstate.*
-
-IdentificationCredentials.txt
