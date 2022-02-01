@@ -15,6 +15,7 @@ terraform{
 variable "devopsdemoimage" {
 	type = string
 	description = "The name of the devopsdemo image"
+	default = "devopsdemo"
 }
 
 variable "imagebuild" {
