@@ -12,6 +12,11 @@ terraform{
 	}
 }
 
+variable "imagebuild" {
+	type = string
+	description = "Latest Image Build"
+}
+
 resource "azurerm_resource_group" "tf_test" {
 	name = "tfmainrg"
 	location = "UK West"
@@ -28,7 +33,7 @@ resource "azurerm_container_group" "trcg_test" {
 
 	container {
 		name = "devopsdemo"
-		image = "domas911/devopsdemo"
+		image = "domas911/devopsdemo:${var.imagebuild}"
 		cpu = "1"
 		memory = "1"
 		ports {
