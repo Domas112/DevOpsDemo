@@ -10,6 +10,7 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
+  image: 'devopsdemo'
 
 stages:
 - stage: Build
@@ -23,7 +24,7 @@ stages:
     - task: Docker@2
       inputs:
         containerRegistry: 'Domas Docker Hub'
-        repository: 'domas911/devopsdemo'
+        repository: 'domas911/$(image)'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
         tags: |
