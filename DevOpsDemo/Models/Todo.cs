@@ -8,9 +8,10 @@ namespace DevOpsDemo.Models
         public Guid Id { get; set; } = Guid.NewGuid();
         [Required]
         public string Description { get; set; }
-        [Required]
-        public DateTime CreatedAt { get; set; }
-        [Required]
-        public DateTime Deadline { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        
+        public DateTime? Deadline { get; set; }
+        public bool Completed { get; set; } = false;
     }
 }

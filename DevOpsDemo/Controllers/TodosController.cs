@@ -51,7 +51,20 @@ namespace DevOpsDemo.Controllers
             {
                 return BadRequest();
             }
+        }
 
+        [HttpPost("complete/{id}")]
+        public async Task<ActionResult<Todo>> CompleteTodo(Guid id)
+        {
+            Todo? completedTodo = await _repo.CompleteTodo(id);
+            if(completedTodo == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return Ok(completedTodo);
+            }
         }
     }
 }
