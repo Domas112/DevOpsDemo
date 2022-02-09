@@ -41,7 +41,6 @@ stages:
         containerRegistry: 'Domas Docker Hub'
         repository: 'domas911/$(image)'
         command: 'push'
-        Dockerfile: '**/Dockerfile'
         tags: |
           $(tag)
 - stage: Provision
