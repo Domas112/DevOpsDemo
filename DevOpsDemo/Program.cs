@@ -3,7 +3,8 @@ using DevOpsDemo.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
+Console.Write("The azuredb connection variable is: ");
+Console.WriteLine(System.Environment.GetEnvironmentVariable("AzureDBConnection"));
 // Add services to the container.
 builder.Services.AddDbContext<TodoDbContext>(opt => opt.UseSqlServer(
         System.Environment.GetEnvironmentVariable("AzureDBConnection")
