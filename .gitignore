@@ -370,12 +370,12 @@ FodyWeavers.xsd
 *.tfstate
 *.tfstate.*
 
-appsettings.json
-appsettings.*.json
+# appsettings.json
+# appsettings.*.json
 
 
-DevOpsDemo/appsettings.json
-DevOpsDemo/appsettings.*.json
+# DevOpsDemo/appsettings.json
+# DevOpsDemo/appsettings.*.json
 
-DevOpsDemo/DevOpsDemo/appsettings.json
-DevOpsDemo/DevOpsDemo/appsettings.*.json
+# DevOpsDemo/DevOpsDemo/appsettings.json
+# DevOpsDemo/DevOpsDemo/appsettings.*.json
