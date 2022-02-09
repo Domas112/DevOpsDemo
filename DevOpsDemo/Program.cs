@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<TodoDbContext>(opt => opt.UseSqlServer(
-        builder.Configuration.GetConnectionString("AzureDBConnection")
+        System.Environment.GetEnvironmentVariable("AzureDBConnection")
     ));
 builder.Services.AddScoped<ITodosRepo, TodosRepo>();
 builder.Services.AddControllers();
