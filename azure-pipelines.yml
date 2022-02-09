@@ -27,9 +27,9 @@ stages:
         repository: 'domas911/$(image)'
         command: 'build'
         Dockerfile: '**/Dockerfile'
-        arguments: AzureDbConnection=$(AzureDBConnection)
         tags: |
           $(tag)
+        arguments: --label AzureDbConnection=$(AzureDBConnection)
 - stage: Push
   displayName: Push
   jobs:
