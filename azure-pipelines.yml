@@ -29,7 +29,7 @@ stages:
         Dockerfile: '**/Dockerfile'
         tags: |
           $(tag)
-        arguments: --label AzureDbConnection=$(AzureDBConnection)
+        arguments: '--build-arg AzureDbConnection=$(AzureDBConnection)'
   - job: 'Push'
     displayName: 'Push image'
     steps:
