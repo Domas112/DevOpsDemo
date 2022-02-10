@@ -15,11 +15,16 @@ stages:
 - stage: Build
   displayName: Build image
   jobs:
-  - job: Build
-    displayName: Build
+  - job: BuildPush
+    displayName: Build and push
     pool:
       vmImage: ubuntu-latest
     steps:
+    - task: Docker@2
+      displayName: Login to Docker Hub
+      inputs:
+        command: login
+        containerRegistry: 'Domas Docker Hub'
     - task: Docker@2
       displayName: Build an image
       inputs:
@@ -30,14 +35,12 @@ stages:
         tags: |
           $(tag)
         arguments: '--build-arg AzureDbConnection=$(AzureDBConnection)'
-  - job: 'Push'
-    displayName: 'Push image'
-    dependsOn: 'Build'
-    steps:
     - task: Docker@2
+      displayName: Push the image
       inputs:
-        command: 'push'
+        command: push
         repository: 'domas911/devopsdemo'
         containerRegistry: 'Domas Docker Hub'
         tags: |
           $(tag)
+  
