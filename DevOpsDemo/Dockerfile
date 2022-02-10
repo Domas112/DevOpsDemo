@@ -14,6 +14,6 @@ WORKDIR /app
 COPY --from=build-env /app/out .
 ENTRYPOINT [ "dotnet", "DevOpsDemo.dll" ]
 
-ARG AzureDBConnection
+ARG DBConn
 
-ENV AzureDBConnection = ${AzureDBConnection}
+ENV AzureDBConnection = ${DBConn}
