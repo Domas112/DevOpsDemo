@@ -10,9 +10,11 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
+  image: 'devopsdemo'
+  registry: 'Domas Docker Hub'
 
 stages:
-- stage: Build
+- stage: BuildPush
   displayName: Build image
   jobs:
   - job: BuildPush
@@ -21,26 +23,45 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - task: Docker@2
-      displayName: Login to Docker Hub
-      inputs:
-        command: login
-        containerRegistry: 'Domas Docker Hub'
-    - task: Docker@2
       displayName: Build an image
       inputs:
         command: build
         dockerfile: '$(Build.SourcesDirectory)/DevOpsDemo/Dockerfile'
-        repository: 'domas911/devopsdemo'
-        containerRegistry: 'Domas Docker Hub'
+        repository: 'domas911/$(image)'
+        containerRegistry: $(registry)
         tags: |
           $(tag)
-        arguments: '--build-arg AzureDbConnection=$(AzureDBConnection)'
+        arguments: '--build-arg DBConn=$(AzureDBConnection)'
     - task: Docker@2
       displayName: Push the image
       inputs:
         command: push
-        repository: 'domas911/devopsdemo'
-        containerRegistry: 'Domas Docker Hub'
+        repository: 'domas911/$(image)'
+        containerRegistry: $(registry)
         tags: |
           $(tag)
-  
+- stage: Provision
+  displayName: "Terraforming on Azure..."
+  dependsOn: 'BuildPush'
+  jobs:
+  - job: Provision
+    displayName: 'Provisioning Container Instance'
+    pool:
+      vmImage: ubuntu-latest
+    variables:
+    - group: TerraformEnvVars
+    steps:
+    - script: |
+        set -e
+
+        terraform init -input=false
+        terraform apply -input=false -auto-approve
+      name: 'RunTerraform'
+      displayName: 'Run Terraform'
+      env:
+        ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+        ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+        ARM_TENANT_ID: $(ARM_TENANT_ID)
+        ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+        TF_VAR_imagebuild: $(tag)
+        AzureDBConnection: $(AzureDBConnection)
