@@ -25,7 +25,7 @@ stages:
     - task: Docker@2
       inputs:
         containerRegistry: 'Domas Docker Hub'
-        repository: 'domas911/$(image)'
+        repository: 'domas911/devopsdemo'
         command: 'build'
         Dockerfile: '**/Dockerfile'
         tags: |
@@ -38,7 +38,7 @@ stages:
     - task: Docker@2
       inputs:
         containerRegistry: 'Domas Docker Hub'
-        repository: 'domas911/$(image)'
+        repository: 'domas911/devopsdemo'
         command: 'push'
         tags: |
           $(tag)
