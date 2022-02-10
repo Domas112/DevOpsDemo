@@ -15,5 +15,9 @@ COPY --from=build-env /app/out .
 ENTRYPOINT [ "dotnet", "DevOpsDemo.dll" ]
 
 ARG DBConn
+ARG TAG
+ARG ANOTHER_TAG
 
 ENV AZURE_DB_CONNECTION = ${DBConn}
+ENV TEST_TAG = ${TAG}
+ENV TEST_ANOTHER_TAG = ${ANOTHER_TAG}
