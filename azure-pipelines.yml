@@ -24,12 +24,12 @@ stages:
     - task: Docker@2
       inputs:
         containerRegistry: 'Domas Docker Hub'
-        repository: 'domas911/$(image)'
+        repository: 'domas911/devopsdemo'
         command: 'build'
         Dockerfile: '**/Dockerfile'
         tags: |
           $(tag)
-        arguments: '--build-arg AzureDbConnection=$(AzureDBConnection)'
+        arguments: 'AzureDbConnection=$(AzureDBConnection)'
   - job: 'Push'
     displayName: 'Push image'
     dependsOn: 'Build'
@@ -37,8 +37,9 @@ stages:
     - task: Docker@2
       inputs:
         containerRegistry: 'Domas Docker Hub'
-        repository: 'domas911/$(image)'
+        repository: 'domas911/devopsdemo'
         command: 'push'
+        arguments: 'AzureDbConnection=$(AzureDBConnection)'
         tags: |
           $(tag)
 - stage: Provision
@@ -66,4 +67,3 @@ stages:
         ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
         TF_VAR_imagebuild: $(tag)
         AzureDBConnection: $(AzureDBConnection)
-        
