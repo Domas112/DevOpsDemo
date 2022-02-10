@@ -12,7 +12,7 @@ variables:
   tag: '$(Build.BuildId)'
   image: 'devopsdemo'
   registry: 'Domas Docker Hub'
-  azureconn: '$(AzureDBConnection)'
+  azureconn: $(AzureDBConnection)
 
 stages:
 - stage: BuildPush
