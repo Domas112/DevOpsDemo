@@ -9,8 +9,9 @@ resources:
 - repo: self
 
 variables:
-  tag: 112
+  tag: '$(Build.BuildId)'
   image: 'devopsdemo'
+  registry: 'Domas Docker Hub'
 
 stages:
 - stage: 'BuildPush'
@@ -23,10 +24,12 @@ stages:
     steps:
     - task: Docker@2
       inputs:
-        containerRegistry: 'Domas Docker Hub'
-        repository: 'domas911/devopsdemo:$(tag)'
+        containerRegistry: $(registry)
+        repository: 'domas911/$(devopsdemo)'
         command: 'build'
         Dockerfile: '**/Dockerfile'
+        tags: |
+          $(tag)
         arguments: '--build-arg AzureDbConnection=$(AzureDBConnection)'
   - job: 'Push'
     displayName: 'Push image'
@@ -34,9 +37,11 @@ stages:
     steps:
     - task: Docker@2
       inputs:
-        containerRegistry: 'Domas Docker Hub'
-        repository: 'domas911/devopsdemo:$(tag)'
+        containerRegistry: $(registry)
+        repository: 'domas911/$(devopsdemo)'
         command: 'push'
+        tags: |
+          $(tag)
 - stage: Provision
   displayName: "Terraforming on Azure..."
   dependsOn: 'BuildPush'
