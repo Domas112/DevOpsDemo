@@ -27,8 +27,7 @@ stages:
         repository: 'domas911/devopsdemo'
         command: 'build'
         Dockerfile: '**/Dockerfile'
-        tags: |
-          $(tag)
+        tags: 'tagtesting'
         arguments: '--build-arg AzureDbConnection=$(AzureDBConnection)'
   - job: 'Push'
     displayName: 'Push image'
@@ -39,8 +38,7 @@ stages:
         containerRegistry: 'Domas Docker Hub'
         repository: 'domas911/devopsdemo'
         command: 'push'
-        tags: |
-          $(tag)
+        tags: 'tagtesting'
 - stage: Provision
   displayName: "Terraforming on Azure..."
   dependsOn: 'BuildPush'
