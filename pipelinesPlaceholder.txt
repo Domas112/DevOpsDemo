@@ -14,19 +14,31 @@ variables:
 
 stages:
 - stage: 'BuildPush'
-  displayName: 'Build image'
-  jobs:  
-  - job: Build
-    displayName: Build
+  displayName: 'Build and Push'
+  jobs:
+  - job: 'Build'
+    displayName: 'Build image'
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: ubuntu-latest
     steps:
     - task: Docker@2
       inputs:
-        containerRegistry: 'Binarythistle Docker Hub'
-        repository: 'binarythistle/weatherapi'
-        command: 'buildAndPush'
+        containerRegistry: 'Domas Docker Hub'
+        repository: 'domas911/$(image)'
+        command: 'build'
         Dockerfile: '**/Dockerfile'
+        tags: |
+          $(tag)
+        arguments: '--build-arg AzureDbConnection=$(AzureDBConnection)'
+  - job: 'Push'
+    displayName: 'Push image'
+    dependsOn: 'Build'
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Domas Docker Hub'
+        repository: 'domas911/$(image)'
+        command: 'push'
         tags: |
           $(tag)
 - stage: Provision
