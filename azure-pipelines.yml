@@ -29,3 +29,15 @@ stages:
         containerRegistry: 'Domas Docker Hub'
         tags: |
           $(tag)
+        arguments: '--build-arg AzureDbConnection=$(AzureDBConnection)'
+  - job: 'Push'
+    displayName: 'Push image'
+    dependsOn: 'Build'
+    steps:
+    - task: Docker@2
+      inputs:
+        command: 'push'
+        repository: 'domas911/devopsdemo'
+        containerRegistry: 'Domas Docker Hub'
+        tags: |
+          $(tag)
