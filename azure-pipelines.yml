@@ -32,6 +32,7 @@ stages:
         arguments: '--build-arg AzureDbConnection=$(AzureDBConnection)'
   - job: 'Push'
     displayName: 'Push image'
+    dependsOn: 'Build'
     steps:
     - task: Docker@2
       inputs:
