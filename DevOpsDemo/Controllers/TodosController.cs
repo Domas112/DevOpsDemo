@@ -12,7 +12,7 @@ namespace DevOpsDemo.Controllers
         public TodosController(ITodosRepo repo)
         {
             _repo = repo;
-        } 
+        }
 
         [HttpGet]
         public async Task<ActionResult<ICollection<Todo>>> GetAllTodos()
@@ -24,7 +24,7 @@ namespace DevOpsDemo.Controllers
         public async Task<ActionResult<Todo>> GetTodoById(Guid id)
         {
             Todo todo = await _repo.GetTodoById(id);
-            if(todo != null)
+            if (todo != null)
             {
                 return Ok(todo);
             }
@@ -37,13 +37,13 @@ namespace DevOpsDemo.Controllers
         [HttpPost]
         public async Task<ActionResult<Todo>> CreateTodo(Todo todo)
         {
-            if(todo == null)
+            if (todo == null)
             {
                 return BadRequest("The todo cannot be empty");
             }
             Todo? addedTodo = await _repo.AddTodo(todo);
 
-            if(addedTodo != null)
+            if (addedTodo != null)
             {
                 return Ok(addedTodo);
             }
@@ -57,7 +57,7 @@ namespace DevOpsDemo.Controllers
         public async Task<ActionResult<Todo>> CompleteTodo(Guid id)
         {
             Todo? completedTodo = await _repo.CompleteTodo(id);
-            if(completedTodo == null)
+            if (completedTodo == null)
             {
                 return BadRequest();
             }
@@ -65,6 +65,25 @@ namespace DevOpsDemo.Controllers
             {
                 return Ok(completedTodo);
             }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ICollection<Todo>>> DeleteTodo(Guid id)
+        {
+            var toDelete = await _repo.DeleteTodo(id);
+
+            if (toDelete == null) return BadRequest();
+
+            return Ok(toDelete);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<Todo>> UpdateTodo(Todo todo)
+        {
+            var updated = await _repo.UpdateTodo(todo);
+            if(updated == null) return BadRequest();
+
+            return Ok(updated);
         }
     }
 }

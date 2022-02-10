@@ -56,6 +56,31 @@ namespace DevOpsDemo.Repositories
 
         }
 
+        public async Task<Todo?> UpdateTodo(Todo todo)
+        {
+            if (todo == null) return null;
+            
+            _ctx.Todos.Update(todo);
+            
+            if (!SaveChanges()) return null;
+
+            return await GetTodoById(todo.Id);
+
+
+        }
+
+        public async Task<ICollection<Todo>?> DeleteTodo(Guid id)
+        {
+            Todo? toDelete = await _ctx.Todos.FindAsync(id);
+            if (toDelete == null) return null;
+            
+            _ctx.Todos.Remove(toDelete);
+            SaveChanges();
+
+            return _ctx.Todos.ToList();
+            
+        }
+
         public bool SaveChanges()
         {
             return (_ctx.SaveChanges() >= 0);
