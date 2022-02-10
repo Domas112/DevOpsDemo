@@ -13,11 +13,11 @@ variables:
   image: 'devopsdemo'
 
 stages:
-- stage: BuildPush
-  displayName: Build image
+- stage: 'BuildPush'
+  displayName: 'Build and Push'
   jobs:
-  - job: Build
-    displayName: Build
+  - job: 'Build'
+    displayName: 'Build image'
     pool:
       vmImage: ubuntu-latest
     steps:
@@ -30,8 +30,8 @@ stages:
         tags: |
           $(tag)
         arguments: --label AzureDbConnection=$(AzureDBConnection)
-  - job: Push
-    displayName: Push image
+  - job: 'Push'
+    displayName: 'Push image'
     steps:
     - task: Docker@2
       inputs:
