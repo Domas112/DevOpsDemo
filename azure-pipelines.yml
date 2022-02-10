@@ -13,7 +13,7 @@ variables:
   image: 'devopsdemo'
 
 stages:
-- stage: Build
+- stage: BuildPush
   displayName: Build image
   jobs:
   - job: Build
@@ -30,11 +30,8 @@ stages:
         tags: |
           $(tag)
         arguments: --label AzureDbConnection=$(AzureDBConnection)
-- stage: Push
-  displayName: Push
-  jobs:
   - job: Push
-    displayName: Push
+    displayName: Push image
     steps:
     - task: Docker@2
       inputs:
@@ -42,7 +39,7 @@ stages:
         repository: 'domas911/$(image)'
         command: 'push'
         tags: |
-          'domas911/$(tag)'
+          $(tag)
 - stage: Provision
   displayName: "Terraforming on Azure..."
   dependsOn: Build
