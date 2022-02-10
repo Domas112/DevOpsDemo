@@ -16,4 +16,4 @@ ENTRYPOINT [ "dotnet", "DevOpsDemo.dll" ]
 
 ARG DBConn
 
-ENV AzureDBConnection = ${DBConn}
+ENV AZURE_DB_CONNECTION = ${DBConn}
