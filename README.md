@@ -1,5 +1,5 @@
 # DevOpsDemo
-A simple To Do web app deployment
+A simple To Do web app deployment demo
 
 Backend:
   ASP.NET Core 
