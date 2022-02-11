@@ -2,15 +2,15 @@
 A simple To Do web app deployment demo
 
 * Backend:
-** ASP.NET Core, 
-** Entity Framework Core,
-** MSSQL
+- ASP.NET Core, 
+- Entity Framework Core,
+- MSSQL
   
 * Frontend:
-** Blazor WASM
+- Blazor WASM
   
 * DevOps:
-** Docker
-** Terraform
-** Azure DevOps
-** Hosted on Azure
+- Docker
+- Terraform
+- Azure DevOps
+- Hosted on Azure
