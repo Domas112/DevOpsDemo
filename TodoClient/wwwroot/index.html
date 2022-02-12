@@ -12,7 +12,22 @@
 </head>
 
 <body>
-    <div id="app">Loading...</div>
+    <div id="app">
+        <h1>Welcome to the Todo app!</h1>
+        <p id="loadingText">
+            Currently loading
+        </p>
+    </div>
+    <script>
+        window.addEventListener('load', () => {
+            console.log("loaded")
+            window.setTimeout(addDot, 100);
+
+            function addDot() {
+                document.getElementById("loadingText").innerHTML += ".";
+            }
+        })
+    </script>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.

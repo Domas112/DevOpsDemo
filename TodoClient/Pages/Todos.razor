@@ -1,0 +1,49 @@
+﻿@page "/todos"
+
+<h3>Helloworld, this is todos</h3>
+@if(_todos != null)
+{
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">
+                Description
+            </th>
+            <th scope="col">
+                Created at
+            </th>
+            <th scope="col">
+                Deadline
+            </th>
+            <th scope="col">
+                Is completed
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Todo todo in _todos)
+        {
+            <tr>
+                <td scope="row">
+                    @todo.Description
+                </td>
+                <td>
+                    @todo.CreatedAt.ToString()
+                </td>
+                <td>
+                    @todo.Deadline.ToString()
+                </td>
+                <td>
+                    @todo.Completed
+                </td>
+                <button class="btn btn-check" @onclick="@(()=>{CompleteTodo(todo.Id);})">
+                    Complete
+                </button>
+            </tr>
+        }
+    </tbody>
+
+</table>
+}else{
+    <p>This is the todos page!</p>
+}
