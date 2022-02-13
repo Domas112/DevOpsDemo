@@ -1,0 +1,76 @@
+﻿
+
+@if(todos != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">
+                    Edit button
+                </th>
+                <th scope="col">
+                    Description
+                </th>
+                <th scope="col">
+                    Created at
+                </th>
+                <th scope="col">
+                    Deadline
+                </th>
+                <th scope="col">
+                    Is completed
+                </th>
+                <th scope="col">
+                    Complete button
+                </th>
+                <th scope="col">
+                    Delete button
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var (todo, i) in todos.Select((item, i)=>(item, i)))
+            {
+                
+                    <tr id="@i">
+                        <td scope="row">
+
+                            <button @onclick=@(()=>edit(todo)) type="button" class="btn btn-info">
+                                Edit @i
+                            </button>
+                        </td>
+                        <td>
+                            <input disabled="@disabled" type="text" @bind-value:event="onchange"
+                            @bind-value="@todo.Description"/>
+                         </td>
+                        <td>
+                            <input disabled="@disabled" type="date" @bind-value:event="onchange"
+                            @bind-value="@todo.CreatedAt"/>
+                        </td>
+                        <td>
+                            <input disabled="@disabled" type="date" @bind-value:event="onchange"
+                            @bind-value="@todo.Deadline"/>
+                        </td>
+                        <td>
+                            <input disabled="@disabled" type="checkbox" @bind-value:event="onchange"
+                            @bind-value="@todo.Completed"/>
+                        </td>
+                        <td>
+                            <button class="btn btn-success" @onclick=@(()=>CompleteTodo.InvokeAsync(todo.Id))>
+                                Complete
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" @onclick=@(()=>DeleteTodo.InvokeAsync(todo.Id))>
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+            }
+        </tbody>
+
+    </table>
+}else{
+    <p>This is the todos page!</p>
+}
+

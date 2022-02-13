@@ -11,7 +11,7 @@ namespace TodoClient.Pages
         private ITodosService _todosService { get; set; }
 
 
-        ICollection<Todo> _todos { get; set; }
+        IList<Todo> _todos { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -20,8 +20,31 @@ namespace TodoClient.Pages
 
         private async Task CompleteTodo(Guid id)
         {
-            Console.WriteLine(id.ToString());
+            Todo toComplete = _todos.FirstOrDefault(todo => todo.Id == id);
+            toComplete.Completed = !toComplete.Completed;
+            
             await _todosService.CompleteTodoAsync(id);
+        }
+
+        private async Task CreateTodo(CreateTodoDto todo)
+        {
+            await _todosService.InsertTodoAsync(todo);
+        }
+
+        private async Task DeleteTodo(Guid id)
+        {
+            _todos.Remove(_todos.FirstOrDefault(item => item.Id == id));
+            await _todosService.DeleteTodoAsync(id);
+        }
+
+        private async Task UpdateTodo(Todo updateTo)
+        {
+            Todo toBeUpdated = (from item in _todos
+                                where item.Id == updateTo.Id
+                                select item).FirstOrDefault();
+
+            toBeUpdated = updateTo;
+            await _todosService.UpdateTodoAsync(updateTo);
         }
 
     }

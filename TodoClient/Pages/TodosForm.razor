@@ -1,0 +1,14 @@
+﻿
+
+<EditForm Model=@todo OnValidSubmit=@(
+    ()=>CreateTodo.InvokeAsync(new CreateTodoDto{
+        Description = todo.Description,
+        Deadline = todo.Deadline
+    })
+)>
+    <InputText @bind-Value="todo.Description"/>
+    <InputDate @bind-Value="todo.Deadline"/>
+    <button type="submit" class="btn btn-primary">
+        Submit
+    </button>
+</EditForm>
