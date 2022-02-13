@@ -11,9 +11,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DevOpsDemo.Migrations
 {
-    [DbContext(typeof(TodoDbContext))]
-    [Migration("20220209205430_InitialMigration")]
-    partial class InitialMigration
+    [DbContext(typeof(MainDbContext))]
+    [Migration("20220213183219_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,9 +43,53 @@ namespace DevOpsDemo.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Todos");
+                });
+
+            modelBuilder.Entity("DevOpsDemo.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("DevOpsDemo.Models.Todo", b =>
+                {
+                    b.HasOne("DevOpsDemo.Models.User", "User")
+                        .WithMany("TodoList")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DevOpsDemo.Models.User", b =>
+                {
+                    b.Navigation("TodoList");
                 });
 #pragma warning restore 612, 618
         }

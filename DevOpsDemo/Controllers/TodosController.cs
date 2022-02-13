@@ -1,4 +1,6 @@
-﻿using DevOpsDemo.Models;
+﻿using AutoMapper;
+using DevOpsDemo.Dtos.TodoDtos;
+using DevOpsDemo.Models;
 using DevOpsDemo.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,24 +11,31 @@ namespace DevOpsDemo.Controllers
     public class TodosController : ControllerBase
     {
         private readonly ITodosRepo _repo;
-        public TodosController(ITodosRepo repo)
+        private readonly IMapper _mapper;
+        public TodosController(ITodosRepo repo, IMapper mapper)
         {
             _repo = repo;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<ICollection<Todo>>> GetAllTodos()
+        public async Task<ActionResult<ICollection<TodoReadDto>>> GetAllTodos()
         {
-            return Ok(await _repo.GetAllTodos());
+            ICollection<TodoReadDto> response = _mapper.Map<ICollection<TodoReadDto>>(await _repo.GetAllTodos());
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Todo>> GetTodoById(Guid id)
+        public async Task<ActionResult<TodoReadDto>> GetTodoById(Guid id)
         {
-            Todo todo = await _repo.GetTodoById(id);
+
+            Todo? todo = await _repo.GetTodoById(id);
+            
+
             if (todo != null)
             {
-                return Ok(todo);
+                TodoReadDto response = _mapper.Map<TodoReadDto>(todo);
+                return Ok(response);
             }
             else
             {
@@ -35,17 +44,18 @@ namespace DevOpsDemo.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Todo>> CreateTodo(Todo todo)
+        public async Task<ActionResult<TodoReadDto>> CreateTodo(TodoCreateDto todoDto)
         {
-            if (todo == null)
-            {
-                return BadRequest("The todo cannot be empty");
-            }
+
+            if (todoDto == null) return BadRequest("The todo cannot be empty");
+            
+            Todo todo = _mapper.Map<Todo>(todoDto);
             Todo? addedTodo = await _repo.AddTodo(todo);
 
             if (addedTodo != null)
             {
-                return Ok(addedTodo);
+                TodoReadDto response = _mapper.Map<TodoReadDto>(addedTodo);
+                return Ok(response);
             }
             else
             {
@@ -54,7 +64,7 @@ namespace DevOpsDemo.Controllers
         }
 
         [HttpPost("complete/{id}")]
-        public async Task<ActionResult<Todo>> CompleteTodo(Guid id)
+        public async Task<ActionResult<TodoReadDto>> CompleteTodo(Guid id)
         {
             Todo? completedTodo = await _repo.CompleteTodo(id);
             if (completedTodo == null)
@@ -63,27 +73,28 @@ namespace DevOpsDemo.Controllers
             }
             else
             {
-                return Ok(completedTodo);
+                return Ok(_mapper.Map<TodoReadDto>(completedTodo));
             }
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ICollection<Todo>>> DeleteTodo(Guid id)
+        public async Task<ActionResult<ICollection<TodoReadDto>>> DeleteTodo(Guid id)
         {
-            var toDelete = await _repo.DeleteTodo(id);
+            ICollection<Todo>? afterDelete = await _repo.DeleteTodo(id);
 
-            if (toDelete == null) return BadRequest();
+            if (afterDelete == null) return BadRequest();
 
-            return Ok(toDelete);
+            return Ok(_mapper.Map<TodoReadDto>(afterDelete));
         }
 
         [HttpPut]
-        public async Task<ActionResult<Todo>> UpdateTodo(Todo todo)
+        public async Task<ActionResult<TodoReadDto>> UpdateTodo(TodoUpdateDto todoDto)
         {
+            Todo todo = _mapper.Map<Todo>(todoDto);
             var updated = await _repo.UpdateTodo(todo);
             if(updated == null) return BadRequest();
 
-            return Ok(updated);
+            return Ok(_mapper.Map<TodoReadDto>(updated));
         }
     }
 }

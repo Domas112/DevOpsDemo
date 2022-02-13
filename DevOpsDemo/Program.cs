@@ -7,9 +7,12 @@ string? DBEnvVariable = System.Environment.GetEnvironmentVariable("AZURE_DB_CONN
 
 Console.Write("The azuredb connection variable is: ");
 Console.WriteLine(DBEnvVariable is null? "Empty" : DBEnvVariable);
+
 // Add services to the container.
-builder.Services.AddDbContext<TodoDbContext>(opt => opt.UseSqlServer(DBEnvVariable));
+builder.Services.AddDbContext<MainDbContext>(opt => opt.UseSqlServer(DBEnvVariable));
 builder.Services.AddScoped<ITodosRepo, TodosRepo>();
+builder.Services.AddScoped<IUsersRepo, UsersRepo>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

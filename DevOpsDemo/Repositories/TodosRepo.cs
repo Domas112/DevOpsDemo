@@ -5,8 +5,8 @@ namespace DevOpsDemo.Repositories
 {
     public class TodosRepo : ITodosRepo
     {
-        private readonly TodoDbContext _ctx;
-        public TodosRepo(TodoDbContext ctx)
+        private readonly MainDbContext _ctx;
+        public TodosRepo(MainDbContext ctx)
         {
             _ctx = ctx;
         }
