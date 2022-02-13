@@ -7,7 +7,7 @@ namespace TodoClient.Pages
     {
         //##### PARAMETERS ######
         [Parameter]
-        public IList<Todo>? todos { get; set; }
+        public IList<ReadTodoDto>? todos { get; set; }
 
         [Parameter]
         public EventCallback<Guid> CompleteTodo { get; set; }
@@ -16,24 +16,22 @@ namespace TodoClient.Pages
         public EventCallback<Guid> DeleteTodo { get; set; }
 
         [Parameter]
-        public EventCallback<Todo> UpdateTodo { get; set; }
+        public EventCallback<ReadTodoDto> UpdateTodo { get; set; }
 
         //#### OTHER VARS ####
         private bool disabled = true;
-        private bool edited = false;
-
 
         //## OTHER FUNCTIONS ##
-        private async Task edit(Todo todo)
+        private async Task edit(ReadTodoDto todo)
         {
-            if (disabled)
+            if (todo.EditDisabled)
             {
-                disabled = false;
+                todo.EditDisabled = false;
             }
             else
             {
                 await UpdateTodo.InvokeAsync(todo);
-                disabled = true;
+                todo.EditDisabled = true;
             }
 
         }

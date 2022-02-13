@@ -36,24 +36,23 @@
                         <td scope="row">
 
                             <button @onclick=@(()=>edit(todo)) type="button" class="btn btn-info">
-                                Edit @i
+                                Edit
                             </button>
                         </td>
                         <td>
-                            <input disabled="@disabled" type="text" @bind-value:event="onchange"
+                            <input disabled="@todo.EditDisabled" type="text" @bind-value:event="onchange"
                             @bind-value="@todo.Description"/>
                          </td>
                         <td>
-                            <input disabled="@disabled" type="date" @bind-value:event="onchange"
+                            <input disabled="@todo.EditDisabled" type="date" @bind-value:event="onchange"
                             @bind-value="@todo.CreatedAt"/>
                         </td>
                         <td>
-                            <input disabled="@disabled" type="date" @bind-value:event="onchange"
+                            <input disabled="@todo.EditDisabled" type="date" @bind-value:event="onchange"
                             @bind-value="@todo.Deadline"/>
                         </td>
                         <td>
-                            <input disabled="@disabled" type="checkbox" @bind-value:event="onchange"
-                            @bind-value="@todo.Completed"/>
+                            <input disabled type="checkbox" checked="@todo.Completed"/>
                         </td>
                         <td>
                             <button class="btn btn-success" @onclick=@(()=>CompleteTodo.InvokeAsync(todo.Id))>
